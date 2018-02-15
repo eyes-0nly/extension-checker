@@ -3,14 +3,17 @@
 
 
 import os
+import argparse
 import binascii
 
 i = 0
 e = 0
-print("Enter the path to the directory:", end=" ")
-directory = input()
+parser = argparse.ArgumentParser()
+parser.add_argument("path", help="Path to the directory")
+args = parser.parse_args()
+directory = args.path
 os.chdir(directory)
-for filename in os.listdir(os.getcwd()):
+for filename in filter(os.path.isfile, os.listdir(os.getcwd())):
     if filename != 'rename.py':
         with open(filename, "rb") as binaryfile:
             binaryfile.seek(0)
@@ -33,9 +36,11 @@ for filename in os.listdir(os.getcwd()):
             os.rename(filename, filename.replace(extension, ".bmp"))
             print('Extension of {} changed to bmp'.format(filename))
             e += 1
-        elif filetype == b'4949' or \
-                filetype == b'4d4d' and extension != '.tif' or \
-                extension != '.tiff':
+        elif filetype == b'4949' and extension != '.tif':
+            os.rename(filename, filename.replace(extension, ".tif"))
+            print('Extension of {} changed to tif'.format(filename))
+            e += 1
+        elif filetype == b'4d4d' and extension != '.tiff':
             os.rename(filename, filename.replace(extension, ".tiff"))
             print('Extension of {} changed to tiff'.format(filename))
             e += 1
