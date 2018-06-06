@@ -14,7 +14,7 @@ args = parser.parse_args()
 directory = args.path
 os.chdir(directory)
 for filename in filter(os.path.isfile, os.listdir(os.getcwd())):
-    if filename != 'rename.py':
+    if filename != 'fixext.py':
         with open(filename, "rb") as binaryfile:
             binaryfile.seek(0)
             filetype = binaryfile.read(2)
@@ -45,4 +45,4 @@ for filename in filter(os.path.isfile, os.listdir(os.getcwd())):
             print('Extension of {} changed to tiff'.format(filename))
             e += 1
         i += 1
-print('Done. {} Files. Changed extensions {}'.format(i, e))
+print('Done. {} Files. Fixed extensions {}'.format(i, e))
